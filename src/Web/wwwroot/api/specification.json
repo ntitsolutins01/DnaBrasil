@@ -55,7 +55,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       },
       "post": {
         "tags": [
@@ -87,7 +92,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/TodoItems/{id}": {
@@ -125,7 +135,12 @@
           "200": {
             "description": ""
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -148,7 +163,12 @@
           "200": {
             "description": ""
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/TodoItems/UpdateDetail/{id}": {
@@ -186,7 +206,12 @@
           "200": {
             "description": ""
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/TodoLists": {
@@ -206,7 +231,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       },
       "post": {
         "tags": [
@@ -238,7 +268,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/TodoLists/{id}": {
@@ -276,7 +311,12 @@
           "200": {
             "description": ""
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -298,6 +338,121 @@
         "responses": {
           "200": {
             "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Users/register": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "PostApiUsersRegister",
+        "requestBody": {
+          "x-name": "registration",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          },
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Users/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "PostApiUsersLogin",
+        "parameters": [
+          {
+            "name": "cookieMode",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            },
+            "x-position": 2
+          }
+        ],
+        "requestBody": {
+          "x-name": "login",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessTokenResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Users/refresh": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "PostApiUsersRefresh",
+        "requestBody": {
+          "x-name": "refreshRequest",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshRequest"
+              }
+            }
+          },
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessTokenResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -322,7 +477,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     }
   },
@@ -576,6 +736,111 @@
           }
         }
       },
+      "HttpValidationProblemDetails": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ProblemDetails"
+          },
+          {
+            "type": "object",
+            "additionalProperties": {
+              "nullable": true
+            },
+            "properties": {
+              "errors": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "additionalProperties": {
+          "nullable": true
+        },
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "RegisterRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "AccessTokenResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "token_type": {
+            "type": "string"
+          },
+          "access_token": {
+            "type": "string"
+          },
+          "expires_in": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "refresh_token": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "RefreshRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "refreshToken": {
+            "type": "string"
+          }
+        }
+      },
       "WeatherForecast": {
         "type": "object",
         "additionalProperties": false,
@@ -598,6 +863,19 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "JWT": {
+        "type": "apiKey",
+        "description": "Type into the textbox: Bearer {your JWT token}.",
+        "name": "Authorization",
+        "in": "header"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "JWT": []
+    }
+  ]
 }
